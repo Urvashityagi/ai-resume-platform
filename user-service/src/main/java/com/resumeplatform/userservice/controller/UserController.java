@@ -5,6 +5,7 @@ import com.resumeplatform.userservice.dto.LoginResponse;
 import com.resumeplatform.userservice.dto.RegisterRequest;
 import com.resumeplatform.userservice.dto.UserResponse;
 import com.resumeplatform.userservice.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class UserController {
 
     @PostMapping("/register")
     public UserResponse register(
-            @RequestBody RegisterRequest request) {
+            @Valid @RequestBody RegisterRequest request) {
 
         return userService.register(request);
     }
@@ -25,7 +26,7 @@ public class UserController {
 
     @PostMapping("/login")
     public LoginResponse login(
-            @RequestBody LoginRequest request) {
+            @Valid  @RequestBody LoginRequest request) {
 
         return userService.login(request);
     }
