@@ -1,5 +1,7 @@
 package com.resumeplatform.userservice.controller;
 
+import com.resumeplatform.userservice.dto.LoginRequest;
+import com.resumeplatform.userservice.dto.LoginResponse;
 import com.resumeplatform.userservice.dto.RegisterRequest;
 import com.resumeplatform.userservice.dto.UserResponse;
 import com.resumeplatform.userservice.service.UserService;
@@ -18,5 +20,13 @@ public class UserController {
             @RequestBody RegisterRequest request) {
 
         return userService.register(request);
+    }
+
+
+    @PostMapping("/login")
+    public LoginResponse login(
+            @RequestBody LoginRequest request) {
+
+        return userService.login(request);
     }
 }
