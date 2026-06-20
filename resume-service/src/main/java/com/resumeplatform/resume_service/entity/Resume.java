@@ -32,4 +32,8 @@ public class Resume {
     private String uploadStatus;
 
     private LocalDateTime createdAt;
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
+    private String extractedText;
 }

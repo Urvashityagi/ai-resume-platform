@@ -1,9 +1,11 @@
 package com.resumeplatform.resume_service.service.impl;
 
 import com.resumeplatform.resume_service.dto.ResumeResponse;
+import com.resumeplatform.resume_service.dto.ResumeTextResponse;
 import com.resumeplatform.resume_service.entity.Resume;
 import com.resumeplatform.resume_service.repository.ResumeRepository;
 import com.resumeplatform.resume_service.service.ResumeService;
+import com.resumeplatform.resume_service.service.pdf.PdfExtractionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class ResumeServiceImpl implements ResumeService {
 
     private final ResumeRepository resumeRepository;
+    private final PdfExtractionService pdfExtractionService;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -52,6 +55,8 @@ public class ResumeServiceImpl implements ResumeService {
                     uploadDir + File.separator + storedFileName;
 
             file.transferTo(new File(filePath));
+            String extractedText =
+                    pdfExtractionService.extractText(filePath);
 
             Resume resume = Resume.builder()
                     .userId(userId)
@@ -60,6 +65,7 @@ public class ResumeServiceImpl implements ResumeService {
                     .filePath(filePath)
                     .fileSize(file.getSize())
                     .uploadStatus("UPLOADED")
+                    .extractedText(extractedText)
                     .createdAt(LocalDateTime.now())
                     .build();
 
@@ -76,5 +82,21 @@ public class ResumeServiceImpl implements ResumeService {
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
         }
+    }
+
+    @Override
+    public ResumeTextResponse getExtractedText(Long resumeId) {
+
+        Resume resume = resumeRepository
+                .findById(resumeId)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Resume not found"));
+
+        return ResumeTextResponse.builder()
+                .resumeId(resume.getId())
+                .extractedText(
+                        resume.getExtractedText())
+                .build();
     }
 }
