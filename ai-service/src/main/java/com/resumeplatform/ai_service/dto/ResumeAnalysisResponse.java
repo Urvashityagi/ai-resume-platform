@@ -12,4 +12,5 @@ public class ResumeAnalysisResponse {
     private String extractedSkills;
 
     private String candidateSummary;
+    private String aiAnalysis;
 }

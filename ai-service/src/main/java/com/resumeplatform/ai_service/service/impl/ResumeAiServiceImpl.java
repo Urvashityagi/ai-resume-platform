@@ -4,6 +4,7 @@ import com.resumeplatform.ai_service.dto.ResumeAnalysisRequest;
 import com.resumeplatform.ai_service.dto.ResumeAnalysisResponse;
 import com.resumeplatform.ai_service.entity.ResumeAnalysis;
 import com.resumeplatform.ai_service.repository.ResumeAnalysisRepository;
+import com.resumeplatform.ai_service.service.OpenAiService;
 import com.resumeplatform.ai_service.service.ResumeAiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,22 +17,20 @@ public class ResumeAiServiceImpl
         implements ResumeAiService {
 
     private final ResumeAnalysisRepository repository;
+    private final OpenAiService openAiService;
 
     @Override
     public ResumeAnalysisResponse analyzeResume(
             ResumeAnalysisRequest request) {
 
-        String skills =
-                "Java, Spring Boot, MySQL";
-
-        String summary =
-                "Experienced Java Backend Developer";
+        String aiResponse =
+                openAiService.analyzeResume(
+                        request.getResumeText());
 
         ResumeAnalysis analysis =
                 ResumeAnalysis.builder()
                         .resumeId(request.getResumeId())
-                        .extractedSkills(skills)
-                        .candidateSummary(summary)
+                        .candidateSummary(aiResponse)
                         .analyzedAt(LocalDateTime.now())
                         .build();
 
@@ -39,8 +38,7 @@ public class ResumeAiServiceImpl
 
         return ResumeAnalysisResponse.builder()
                 .resumeId(request.getResumeId())
-                .extractedSkills(skills)
-                .candidateSummary(summary)
+                .aiAnalysis(aiResponse)
                 .build();
     }
 }
