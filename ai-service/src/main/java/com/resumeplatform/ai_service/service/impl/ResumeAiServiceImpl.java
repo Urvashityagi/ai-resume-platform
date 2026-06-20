@@ -1,5 +1,6 @@
 package com.resumeplatform.ai_service.service.impl;
 
+import com.resumeplatform.ai_service.dto.AiParsedResult;
 import com.resumeplatform.ai_service.dto.ResumeAnalysisRequest;
 import com.resumeplatform.ai_service.dto.ResumeAnalysisResponse;
 import com.resumeplatform.ai_service.entity.ResumeAnalysis;
@@ -23,22 +24,34 @@ public class ResumeAiServiceImpl
     public ResumeAnalysisResponse analyzeResume(
             ResumeAnalysisRequest request) {
 
-        String aiResponse =
+
+        AiParsedResult result =
                 openAiService.analyzeResume(
                         request.getResumeText());
 
         ResumeAnalysis analysis =
                 ResumeAnalysis.builder()
                         .resumeId(request.getResumeId())
-                        .candidateSummary(aiResponse)
+                        .technicalSkills(
+                                result.getTechnicalSkills())
+                        .softSkills(
+                                result.getSoftSkills())
+                        .candidateSummary(
+                                result.getCandidateSummary())
                         .analyzedAt(LocalDateTime.now())
                         .build();
 
         repository.save(analysis);
 
+
         return ResumeAnalysisResponse.builder()
                 .resumeId(request.getResumeId())
-                .aiAnalysis(aiResponse)
+                .technicalSkills(
+                        result.getTechnicalSkills())
+                .softSkills(
+                        result.getSoftSkills())
+                .candidateSummary(
+                        result.getCandidateSummary())
                 .build();
     }
 }

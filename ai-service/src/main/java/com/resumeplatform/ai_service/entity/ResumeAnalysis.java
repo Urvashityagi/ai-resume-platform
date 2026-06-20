@@ -22,7 +22,11 @@ public class ResumeAnalysis {
 
     @Lob
     @Column(columnDefinition = "LONGTEXT")
-    private String extractedSkills;
+    private String technicalSkills;
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
+    private String softSkills;
 
     @Lob
     @Column(columnDefinition = "LONGTEXT")

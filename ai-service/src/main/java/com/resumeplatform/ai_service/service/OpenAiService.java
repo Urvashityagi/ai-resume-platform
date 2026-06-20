@@ -1,7 +1,9 @@
 package com.resumeplatform.ai_service.service;
 
 
+import com.resumeplatform.ai_service.dto.AiParsedResult;
+
 public interface OpenAiService {
 
-    String analyzeResume(String resumeText);
+    AiParsedResult analyzeResume(String resumeText);
 }
