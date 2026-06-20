@@ -54,4 +54,26 @@ public class ResumeAiServiceImpl
                         result.getCandidateSummary())
                 .build();
     }
+
+    @Override
+    public ResumeAnalysisResponse getAnalysis(
+            Long resumeId) {
+
+        ResumeAnalysis analysis =
+                repository.findByResumeId(resumeId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Analysis not found"));
+
+        return ResumeAnalysisResponse.builder()
+                .resumeId(
+                        analysis.getResumeId())
+                .technicalSkills(
+                        analysis.getTechnicalSkills())
+                .softSkills(
+                        analysis.getSoftSkills())
+                .candidateSummary(
+                        analysis.getCandidateSummary())
+                .build();
+    }
 }

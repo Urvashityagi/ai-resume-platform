@@ -19,4 +19,12 @@ public class ResumeAiController {
 
         return resumeAiService.analyzeResume(request);
     }
+
+    @GetMapping("/resume/{resumeId}")
+    public ResumeAnalysisResponse getAnalysis(
+            @PathVariable Long resumeId) {
+
+        return resumeAiService
+                .getAnalysis(resumeId);
+    }
 }

@@ -7,4 +7,7 @@ public interface ResumeAiService {
 
     ResumeAnalysisResponse analyzeResume(
             ResumeAnalysisRequest request);
+
+    ResumeAnalysisResponse getAnalysis(
+            Long resumeId);
 }
